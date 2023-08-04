@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ChatGPT API Example</title>
+    <style>
+      #chat-container {
+        height: 400px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+
+      .message {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ChatGPT API Example</h1>
+
+    <div id="chat-container"></div>
+
+    <input type="text" id="message-input" placeholder="Type your message..." />
+    <button id="send-button">Send</button>
+
+    <script>
+      const apiKey = "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";
+      const apiUrl = "https://api.openai.com/v1/chat/completions";
+      const chatContainer = document.getElementById("chat-container");
+      const messageInput = document.getElementById("message-input");
+      const sendButton = document.getElementById("send-button");
+
+      sendButton.addEventListener("click", () => {
+        const message = messageInput.value.trim();
+        if (message) {
+          sendMessage(message);
+          messageInput.value = "";
+        }
+      });
+
+      async function sendMessage(message) {
+        addMessageToChat("You", message);
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: message }],
+            model: "gpt-3.5-turbo", // Specify the model parameter
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.choices && data.choices.length > 0) {
+          const reply = data.choices[0].message.content;
+          addMessageToChat("ChatGPT",reply );
+        } else {
+          addMessageToChat(
+            "ChatGPT",
+            "Sorry, I could not generate a response."
+          );
+        }
+      }
+
+      function addMessageToChat(role, message) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message");
+        messageElement.textContent = `${role}: ${message}`;
+
+        chatContainer.appendChild(messageElement);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    </script>
+  </body>
+</html>

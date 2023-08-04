@@ -1,0 +1,26 @@
+.body{
+    height: 80%;
+    width:100%;
+    margin-top: 10%;
+    text-align: center;
+}
+.body p{
+    line-height: 20px;
+}
+.button{
+    border: 1px solid;
+    width: 150px;
+    padding: 8px;
+    display: block;
+    margin: 0 auto;
+    text-decoration: none;
+    border-radius: 10px;
+    color: #ffff;
+
+}
+.buttons .blue{
+    background-color: #0565DC;
+}
+.buttons .green{
+    background-color: #42B72A;
+}
